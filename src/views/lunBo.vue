@@ -29,7 +29,7 @@
           </li>
 
         </ul>
-        <div class="slider__nav-bar">
+        <div class="slider__nav-bar" @click="_navClickHandler">
           <a class="nav-control"></a>
           <a class="nav-control nav-control_active"></a>
           <a class="nav-control"></a>
@@ -97,6 +97,8 @@ export default {
       var self = this;
       let prevSlide = this.slides[this.current];
       let nextSlide = this.slides[index];
+      console.log('prevSlide', prevSlide)
+      console.log('nextSlide', nextSlide)
     
 
       self.isAnimating = true;
@@ -111,18 +113,6 @@ export default {
 
       anime(Object.assign({}, self.baseAnimeSettingsBack, {
         targets: nextSlide.querySelectorAll('.back__element'),
-        rotate: [90 * dir + 'deg', 0],
-        translateX: [90 * dir + '%', 0]
-      }));
-
-      anime(Object.assign({}, self.baseAnimeSettingsFront, {
-        targets: nextSlide.querySelectorAll('.front__element'),
-        rotate: [90 * dir + 'deg', 0],
-        translateX: [90 * dir + '%', 0]
-      }));
-      
-      anime(Object.assign({}, self.baseAnimeSettingsTitle, {
-        targets: nextSlide.querySelectorAll('.title__element'),
         rotate: [90 * dir + 'deg', 0],
         translateX: [90 * dir + '%', 0]
       }));
@@ -147,18 +137,17 @@ export default {
         translateX: [0, -100 * dir + '%']
       }));
 
-      anime(Object.assign({}, self.baseAnimeSettingsFront, {
-        targets: prevSlide.querySelectorAll('.front__element'),
-        rotate: [0, -90 * dir + 'deg'],
-        translateX: [0, -100 * dir + '%']
-      }));
-
-      anime(Object.assign({}, self.baseAnimeSettingsTitle, {
-        targets: prevSlide.querySelectorAll('.title__element'),
-        rotate: [0, -90 * dir + 'deg'],
-        translateX: [0, -100 * dir + '%']
-      }));
       
+    },
+    _navClickHandler(e) {
+      var self = this;
+      if (self.isAnimating) return;
+      let target = e.target.closest(".nav-control");
+      if (!target) return;
+      let index = self.thumbs.indexOf(target);
+      if (index === self.current) return;
+      let direction = index > self.current ? 1 : -1;
+      self.goTo(index, direction);
     },
     goStep(dir) {
       let index = this.current + dir;
@@ -323,4 +312,9 @@ export default {
   .nav-control_active {
     opacity: 1;
   }
+  .slider-list__item_active {
+    -webkit-transform: translateX(0);
+            transform: translateX(0);
+    z-index: 2;
+  }  
 </style>
