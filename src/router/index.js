@@ -27,6 +27,11 @@ const routes = [
     path: '/lunBo2',
     name: 'lunBo2',
     component: () => import(/* webpackChunkName: "about" */ '../views/lunBo2.vue')
+  },
+  {
+    path: '/zhuanpan',
+    name: 'zhuanpan',
+    component: () => import(/* webpackChunkName: "about" */ '../views/zhuanpan.vue')
   },  
 ]
 
